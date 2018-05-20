@@ -23,6 +23,7 @@ import org.json.JSONObject;
 public class UID extends CordovaPlugin {
 	public static String uuid; // Device UUID
 	public static String imei; // Device IMEI
+	public static String imei2; //Device IMEI 2
 	public static String imsi; // Device IMSI
 	public static String iccid; // Sim IMSI
 	public static String mac; // MAC address
@@ -46,6 +47,7 @@ public class UID extends CordovaPlugin {
 		Context context = cordova.getActivity().getApplicationContext();
 		UID.uuid = getUuid(context);
 		UID.imei = getImei(context);
+		UID.imei2 = getImeiTwo(context);
 		UID.imsi = getImsi(context);
 		UID.iccid = getIccid(context);
 		UID.mac = getMac(context);
@@ -65,6 +67,7 @@ public class UID extends CordovaPlugin {
 			JSONObject r = new JSONObject();
 			r.put("UUID", UID.uuid);
 			r.put("IMEI", UID.imei);
+			r.put("IMEI2", UID.imei2);
 			r.put("IMSI", UID.imsi);
 			r.put("ICCID", UID.iccid);
 			r.put("MAC", UID.mac);
@@ -110,6 +113,24 @@ public class UID extends CordovaPlugin {
 		return imsi;
 	}
 
+	/**
+	 * Get the device's International Mobile Station Equipment Identity (IMEI).
+	 *
+	 * @param context The context of the main Activity.
+	 * @return
+	 */
+
+	public String getImeiTwo(Context context) {
+
+		final TelephonyManager mTelephony = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+		if (mTelephony.getPhoneCount() > 1){
+			String imeiTwo = mTelephony.getDeviceId(1);
+			return imeiTwo; 
+		}		
+		return null; 		
+	}
+	
 	/**
 	 * Get the sim's Integrated Circuit Card Identifier (ICCID).
 	 *
